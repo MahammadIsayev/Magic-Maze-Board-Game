@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>The Magic Maze</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <link rel="stylesheet" type="text/css" href="mazestyle.css">
+    <script src="https://use.fontawesome.com/efc9cca379.js"></script>
+    <script src="mazegame.js"></script>
+</head>
+
+<body onclick="turnoff()">
+    <h1>Welcome to the Magic Maze Board!</h1>
+    <table id="magicmaze" border="1"></table>
+    <p>Here is the extra tile:</p>
+    <table id="tileT" border="1" onclick="pivotExtra()" draggable="true" ondragstart="drag(event)">
+    </table>
+    <br>
+    <div style="text-align:center;">
+        <button onclick="turn()">Finish Turn</button>
+        <br>
+        <input type="number" size="2" id="size" min="5" max="21" step="2" value="7">
+        <button onclick="reset()">Reset Game</button>
+    </div>
+    <button onclick="toggleText()">How to play</button>
+    <p id="game-instructions">A game of Magic Maze follows this gameplay sequence:
+        1. Start the sand timer, and explore the shopping mall, partially or completely. <br>
+        2. Move each Hero pawn onto the Item space of that hero’s colour. <br>
+        3. When all four Hero pawns are
+        simultaneously on their respective Item
+        spaces, they steal the items, the alarm is
+        triggered, and the four Hero pawns must
+        quickly reach the exit without being caught
+        (i.e. without the sand timer running out).
+        At this moment, flip the Theft tile B-side-up.
+        4. When a Hero pawn reaches an Exit space it can use, remove that Hero
+        pawn from the board. Once all four Hero pawns have left the board, you
+        have achieved victory! However, if the sand timer runs out at any moment
+        during the game, you have met defeat!</p>
+    <script>
+        function toggleText() {
+            let x = document.getElementById("game-instructions");
+            if (x.style.display === "none") {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            }
+        }
+    </script>
+    
+    <script>
+        let magicmaze = new MagicMaze(7);
+        if (localStorage.magicmaze != undefined)
+            magicmaze.fromJSON(localStorage.magicmaze);
+        magicmaze.post();
+
+        function reset() {
+            size = document.getElementById("size").value;
+            magicmaze = new MagicMaze(size);
+            magicmaze.post();
+
+
+        }
+
+        function turn() {
+            magicmaze.endTurn();
+        }
+
+        function pivotExtra() {
+            magicmaze.TileT.axisdegree();
+            magicmaze.post();
+        }
+
+        function pushExtra(i, j) {
+            magicmaze.push(i, j);
+            magicmaze.post();
+
+        }
+
+        function drag(ev) {
+            ev.dataTransfer.setData("text", "");
+        }
+
+        function allowDrop(ev) {
+            ev.preventDefault();
+        }
+
+        function drop(ev, i, j) {
+            ev.preventDefault();
+            pushExtra(i, j);
+        }
+
+    </script>
+</body>
+
+</html>

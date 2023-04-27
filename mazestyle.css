@@ -1,0 +1,25 @@
+body{
+	background-color: lightgoldenrodyellow;
+}
+
+h1{
+	text-align: center;
+	color: peru;
+}
+
+table{
+	border-style: inset;
+}
+
+table, td, th, tr{
+	border-spacing: 0;
+	border-style: none;
+}
+
+p{
+	text-align: center;
+	color: orange;
+	text-align: left;
+	font-size: larger;
+	font-weight: bolder;
+}
